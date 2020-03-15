@@ -2,7 +2,6 @@ var express = require("express");
 var PORT = process.env.PORT || 8080;
 var app = express();
 
-
 // Serve static content for the app from the "public" directory in the application directory.
 app.use(express.static("public"));
 
@@ -14,26 +13,27 @@ app.use(express.json());
 var router = express.Router();
 
 const mysql = require('mysql');
-const pool = mysql.createPool({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'password',
-  database : 'collegeDB',
-  multipleStatements : true,
-  // A `connectionLimit` of 4 works nicely on my machine.  YMMV.
-  connectionLimit : 4
+
+require("dotenv").config();
+
+var connection = mysql.createConnection({
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: process.env.HOST_KEY,
+    database: "collegeDB"
 });
 
-pool.getConnection((error, connection) => {
-    try {
-        if (error) {
-            console.error('Error connecting to the database.', error);
-            res.render('error', { error });
-        } else {
-            req.connection = connection;
-            next();
-        }
-    } finally {
-        connection.release();
-    }
+connection.connect(function(err) {
+    if (err) throw err;
+    console.log("connected as id " + connection.threadId);
 });
+
+//sample function
+function sampleQuery() {
+    var Query = "";
+    connection.query(Query, function(err, res) {
+        if (err) throw err;
+        console.log(res)
+    });
+}

@@ -1,0 +1,5 @@
+
+DROP DATABASE IF EXISTS collegeDB;
+CREATE DATABASE collegeDB;
+USE collegeDB;
+

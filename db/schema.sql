@@ -4,8 +4,7 @@ CREATE DATABASE collegeDB;
 USE collegeDB;
 
 DROP TABLE IF EXISTS users;
-CREATE TABLE users 
-
+CREATE TABLE users (
     user_Id INT PRIMARY KEY AUTO_INCREMENT,
     user_name VARCHAR(16) UNIQUE NOT NULL,
     first_Name VARCHAR(16) NOT NULL,

@@ -37,3 +37,4 @@ function sampleQuery() {
         console.log(res)
     });
 }
+app.listen(8080);

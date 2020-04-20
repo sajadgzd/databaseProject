@@ -4,31 +4,56 @@ $(document).ready(function() {
 
   function getData() {
     $.ajax({
-        url: "/",
+        url: "/courses",
         method: "GET"
     }).then(function(response) {
-        console.log("GET root worked fine\n",response);
-        $("#").append("<p style='font-weight: bold'> Type: " + response.tasks[0].description + "</p><br>");
+        console.log("GET courses worked fine\n",response);
+        $("#retrieveTest").append("<p style='font-weight: bold'> Type: " + response + "</p><br>");
     });
   };
   getData();
 
-  $(document.body).on("click", "#", function(event) {
-    event.preventDefault();
-    var text = $("#").val().trim()
-    $("#reg-form").append("<p style='font-weight: bold'> Typed: " + text + "</p><br>")
-    console.log("text value:", text)
+  // $(document.body).on("click", "#", function(event) {
+  //   event.preventDefault();
+  //   var text = $("#").val().trim()
+  //   $("#reg-form").append("<p style='font-weight: bold'> Typed: " + text + "</p><br>")
+  //   console.log("text value:", text)
 
-    var msg = {
-      // textmsg: text 
+  // });
+
+  function postSignup(){
+    let username =""
+    let firstname =""
+    let lastname =""
+    let user = {
+      username = $("#username").val().trim(),
+      firstname = $("#firstname").val().trim(),
+      lastname = $("#lastname").val().trim()
     }
-
-    $.post("/", msg)
-    .then(function(data) {
-      console.log("got data back from POST call", data.textmsg);
-      alert("POST worked...");
+  
+    console.log(user)
+  
+    $.post("/signup", user)
+    .then(function(user) {
+      console.log("got data back from POST call", user);
+      // alert("POST worked...");
     });
+  }
+  postSignup();
 
-  });
+
+  function postLogin(){
+    let loginUsername = $("#loginUsername").val().trim()
+    $.post("/login", user)
+    .then(function(user) {
+      console.log("got data back from POST call", user);
+      // alert("POST worked...");
+    });
+  }
+  postLogin()
+
+
+
+
 
 });

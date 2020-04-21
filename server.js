@@ -21,23 +21,6 @@ app.get('/', (req, res) => res.status(200).sendFile('./public/index.html'));
 app.get('/main', (req, res) => res.status(200).sendFile(path.resolve('./public/main.html')));
 app.get('/signup', (req, res) => res.status(200).sendFile(path.resolve('./public/main.html')));
 
-// app.get('/signup', function (req, res) {
-//     // res.send("page")
-//     res.sendFile(path.resolve('./public/main.html'));
-//     // res.sendFile('./main.html')
-//     }) 
-    
-// router.get('/',function(req,res){
-//     res.sendFile(path.join(__public+'/index.html'));
-//     //__dirname : It will resolve to your project folder.
-//   });
-
-// app.get('/signup', (req, res) => res.status(200).sendFile('./public/main.html'));
-
-
-
-
-
 app.post('/signup', function(req, res) {
     console.log(req, res);
     res.render('./public/main.html');
@@ -57,14 +40,17 @@ connection.connect(function(err) {
     console.log("connected as id " + connection.threadId);
 });
 
-//sample function
-function sampleQuery() {
-    var Query = "";
-    connection.query(Query, function(err, res) {
-        if (err) throw err;
-        console.log(res)
-    });
-}
+
+const query_users = 'SELECT  user_name FROM users ORDER BY user_name;';
+const query_create_user = 'INSERT INTO users (user_name, first_Name, last_Name) VALUES (?, ?, ?);';
 
 
+// //sample function
+// function sampleQuery() {
+//     var Query = "";
+//     connection.query(Query, function(err, res) {
+//         if (err) throw err;
+//         console.log(res)
+//     });
+// }
 app.listen(3000);

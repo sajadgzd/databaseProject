@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS post;
 CREATE TABLE post (
     post_Id INT PRIMARY KEY,
     class_Id INTEGER NOT NULL,
+    post_text VARCHAR(16) NOT NULL,
     post_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(class_Id) REFERENCES class(class_Id)
 );
@@ -35,6 +36,7 @@ DROP TABLE IF EXISTS comments;
 CREATE TABLE comments (
     user_Id INTEGER NOT NULL,
     post_Id INTEGER NOT NULL,
+    comment_text VARCHAR(16) NOT NULL,
     comment_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_Id) REFERENCES users(user_Id),
     FOREIGN KEY(post_Id) REFERENCES post(post_Id)
@@ -48,8 +50,6 @@ CREATE TABLE likes (
     FOREIGN KEY(post_Id) REFERENCES post(post_Id)
 
 );
-
-
 
 DROP TABLE IF EXISTS connection;
 
@@ -107,6 +107,31 @@ CREATE VIEW follows AS
 
 
 
+CREATE VIEW form AS
+    SELECT class_Id, form_id,user_name, first_Name, content, posted FROM
+        ((SELECT class.id as class_Id, users.id AS form_id, user_id, first_name, content, posted
+            FROM class
+            JOIN users ON class.user_id = users.id
+            WHERE deleted IS NULL)
+        UNION
+        (SELECT class.id AS class_Id, source AS form_id, target as user_id, first_name, content, posted
+            FROM class
+            JOIN follows ON class.user_id = target
+            JOIN users ON target = users.id
+            WHERE deleted IS NULL)) ;
 
-INSERT INTO users VALUES (1, 'Bernardo', 'Bernie', 'sander');
+
+
+INSERT INTO users VALUES (1, 'sander', 'Bernie', 'sander');
+INSERT INTO users VALUES (2, 'snj', 'Sanjay', 'Gurung');
+INSERT INTO users VALUES (3, 'sam', 'Sambeg', 'subedi');
+INSERT INTO users VALUES (4, 'harry', 'Hari', 'Bahadur');
+
+
+INSERT INTO class VALUES(1, 'database', 'john');
+INSERT INTO class VALUES(2, 'software paradigm', 'troger');
+INSERT INTO class VALUES(2, 'senior design 1', 'arthur');
+
+
+CALL follow(get_user_id_from_name('sander'), get_user_id_from_name('snj'));
 
